@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>登录</h1>
+<form method="POST" action="">
+    {{ form.hidden_tag() }}
+    <p>{{ form.username.label }} {{ form.username(size=32) }}</p>
+    <p>{{ form.password.label }} {{ form.password(size=32) }}</p>
+    <p>{{ form.remember_me() }} {{ form.remember_me.label }}</p>
+    <p>{{ form.submit() }}</p>
+</form>
+{% endblock %}
