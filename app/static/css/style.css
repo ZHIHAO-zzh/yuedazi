@@ -1,0 +1,481 @@
+/* 全局样式 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #8e2de2, #4a00e0); /* 渐变背景 */
+    color: #333;
+    min-height: 100vh;
+    animation: fadeIn 1s ease-in-out; /* 页面加载淡入动画 */
+}
+
+/* 动画效果 */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 导航栏 */
+nav {
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+nav ul {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    padding: 15px 0;
+}
+
+nav ul li {
+    margin: 0 20px;
+}
+
+nav ul li a {
+    color: #1DA1F2; /* Twitter 蓝色 */
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 16px;
+    transition: color 0.3s, transform 0.3s;
+}
+
+nav ul li a i {
+    margin-right: 8px;
+}
+
+nav ul li a:hover {
+    color: #0d8bf0;
+    transform: scale(1.05); /* 鼠标悬停时缩放 */
+}
+
+/* 主内容区域 */
+main {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 20px;
+}
+
+/* 标题 */
+h1, h2 {
+    color: #fff;
+    text-align: center;
+    margin-bottom: 20px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.card h1, .card h2 {
+    color: #333; /* 深灰色，与白色背景对比明显 */
+    text-shadow: none; /* 移除阴影，因为卡片背景是白色 */
+}
+
+/* 卡片样式（用于活动列表、聊天消息等） */
+.card {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+    animation: slideUp 0.5s ease-in-out; /* 卡片加载动画 */
+}
+
+.card:hover {
+    transform: translateY(-5px); /* 鼠标悬停时上移 */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* 卡片链接样式（用于活动列表和聊天列表） */
+.card-link {
+    display: block;
+    color: #333;
+    text-decoration: none;
+    padding: 10px;
+}
+
+.card-link:hover {
+    color: #1DA1F2;
+}
+
+.card-link:active {
+    transform: scale(0.98);
+    transition: transform 0.1s;
+}
+
+.card-title {
+    color: #1DA1F2;
+    font-weight: 500;
+}
+
+/* 活动列表和最近聊天 */
+#activity-list li, #recent-chats li {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 15px;
+    list-style: none;
+    transition: background 0.3s;
+}
+
+#activity-list li:hover, #recent-chats li:hover {
+    background: rgba(255, 255, 255, 1);
+}
+
+/* 表单样式 */
+form {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+form p {
+    margin-bottom: 20px;
+}
+
+form label {
+    display: block;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+form input[type="text"],
+form input[type="password"],
+form textarea,
+form input[type="datetime-local"],
+form input[type="number"],
+form select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+form input[type="text"]:focus,
+form input[type="password"]:focus,
+form textarea:focus,
+form input[type="datetime-local"]:focus,
+form input[type="number"]:focus,
+form select:focus {
+    border-color: #1DA1F2;
+    outline: none;
+}
+
+form input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+/* 搜索表单 */
+.search-form {
+    margin-bottom: 40px; /* 增加搜索模块与活动列表之间的间距 */
+}
+
+/* 按钮样式 */
+button, input[type="submit"] {
+    background: #1DA1F2;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.3s;
+    margin-left: 10px; /* 按钮之间的间距 */
+}
+
+button:hover, input[type="submit"]:hover {
+    background: #0d8bf0;
+    transform: scale(1.05);
+}
+
+button.delete-btn {
+    background: #e0245e; /* Instagram 红色 */
+}
+
+button.delete-btn:hover {
+    background: #c91d4e;
+}
+
+/* 提示消息 */
+.flash-messages {
+    list-style: none;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.flash-success {
+    color: #28a745;
+    background: rgba(40, 167, 69, 0.1);
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.flash-error {
+    color: #e0245e;
+    background: rgba(224, 36, 94, 0.1);
+    padding: 10px;
+    border-radius: 8px;
+}
+
+/* 聊天界面 */
+#messages {
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    margin-bottom: 20px;
+}
+
+.message {
+    margin-bottom: 15px;
+    padding: 10px 15px;
+    border-radius: 15px;
+    max-width: 70%;
+    animation: slideIn 0.3s ease-in-out;
+}
+
+.message.left {
+    background: #d3d3d3; /* 更深的灰色，与白色背景对比更明显 */
+    margin-right: auto;
+}
+
+.message.right {
+    background: #1DA1F2;
+    color: #fff;
+    margin-left: auto;
+    text-align: right;
+}
+
+.message .timestamp {
+    display: block;
+    font-size: 12px;
+    color: #999;
+    margin-top: 5px;
+}
+
+#message-form {
+    display: flex;
+    gap: 10px;
+}
+
+#message-input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 25px;
+    font-size: 16px;
+}
+
+#message-form button {
+    border-radius: 25px;
+}
+
+/* 活动详情页面 */
+.activity-details p {
+    margin-bottom: 10px;
+    color: #333; /* 深灰色，与白色卡片背景对比 */
+}
+
+.activity-details ul {
+    list-style: none;
+}
+
+.activity-details ul li {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.activity-details a {
+    color: #1DA1F2;
+    text-decoration: none;
+}
+
+.activity-details a:hover {
+    color: #0d8bf0;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    nav ul {
+        flex-direction: column;
+        align-items: center;
+    }
+    nav ul li {
+        margin: 10px 0;
+    }
+    main {
+        padding: 10px;
+    }
+    .card {
+        padding: 15px;
+    }
+    .search-form {
+        margin-bottom: 20px;
+    }
+    button, input[type="submit"] {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+}
+
+/* 导航栏 */
+nav {
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    transition: transform 0.3s ease-in-out; /* 添加动画效果 */
+}
+
+nav ul {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    padding: 15px 0;
+}
+
+nav ul li {
+    margin: 0 20px;
+}
+
+nav ul li a {
+    color: #1DA1F2; /* Twitter 蓝色 */
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 16px;
+    transition: color 0.3s, transform 0.3s;
+}
+
+nav ul li a i {
+    margin-right: 8px;
+}
+
+nav ul li a:hover {
+    color: #0d8bf0;
+    transform: scale(1.05); /* 鼠标悬停时缩放 */
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    nav ul {
+        flex-direction: row; /* 改为水平排列 */
+        overflow-x: auto; /* 允许水平滚动 */
+        white-space: nowrap; /* 防止换行 */
+        padding: 10px 0;
+        justify-content: flex-start; /* 从左侧开始排列 */
+    }
+    nav ul li {
+        margin: 0 10px; /* 减小间距 */
+    }
+    nav ul li a {
+        font-size: 14px; /* 减小字体 */
+    }
+    main {
+        padding: 10px;
+    }
+    .card {
+        padding: 15px;
+    }
+    .search-form {
+        margin-bottom: 20px;
+    }
+    button, input[type="submit"] {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+}
+
+/* 活动管理页面 */
+.activity-info {
+    margin-bottom: 10px; /* 标题与按钮之间的间距 */
+    font-size: 16px;
+    color: #333;
+}
+
+.activity-actions {
+    display: flex;
+    gap: 10px; /* 按钮之间的间距 */
+    flex-wrap: wrap; /* 手机端自动换行 */
+}
+
+/* 按钮样式 */
+button, input[type="submit"] {
+    background: #1DA1F2;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.3s;
+    margin-left: 0; /* 移除之前的 margin-left，使用 gap 控制间距 */
+}
+
+button:hover, input[type="submit"]:hover {
+    background: #0d8bf0;
+    transform: scale(1.05);
+}
+
+button.delete-btn {
+    background: #e0245e; /* Instagram 红色 */
+}
+
+button.delete-btn:hover {
+    background: #c91d4e;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .activity-info {
+        font-size: 14px; /* 手机端减小字体 */
+    }
+    .activity-actions {
+        gap: 8px; /* 手机端减小按钮间距 */
+    }
+    button, input[type="submit"] {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+}

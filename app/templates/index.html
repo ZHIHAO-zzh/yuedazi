@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>活动广场</h1>
+<form method="GET" action="{{ url_for('index') }}" class="search-form">
+    <input type="text" name="search" value="{{ search }}" placeholder="搜索活动">
+    <select name="sort">
+        <option value="created_at" {% if sort == 'created_at' %}selected{% endif %}>按创建时间</option>
+        <option value="event_time" {% if sort == 'event_time' %}selected{% endif %}>按活动时间</option>
+    </select>
+    <button type="submit"><i class="fas fa-search"></i> 搜索</button>
+</form>
+<ul id="activity-list">
+    {% for activity in activities %}
+    <li class="card" data-id="{{ activity.id }}">
+        <a href="{{ url_for('activity_detail', activity_id=activity.id) }}" class="card-link">
+            <span class="card-title">{{ activity.title }}</span>
+            - {{ activity.creator.username }} - {{ to_local_time(activity.event_time).strftime('%Y-%m-%d %H:%M') }}
+            {% if activity.end_time %}
+                至 {{ to_local_time(activity.end_time).strftime('%Y-%m-%d %H:%M') }}
+            {% endif %}
+        </a>
+    </li>
+    {% else %}
+    <li class="card">暂无活动</li>
+    {% endfor %}
+</ul>
+
+{% if current_user.is_authenticated %}
+<h2>最近聊天</h2>
+<ul id="recent-chats">
+    {% for chat in recent_chats %}
+    <li class="card" data-activity-id="{{ chat.activity.id }}" data-conversation-id="{{ chat.conversation_id }}">
+        <a href="{{ url_for('chat', conversation_id=chat.conversation_id) }}" class="card-link">
+            <span class="card-title">{{ chat.activity.title }} - {{ chat.other_user.username }}</span>
+            - 最后消息: 
+            {% if chat.last_message %}
+                <span class="timestamp">{{ chat.local_timestamp.strftime('%Y-%m-%d %H:%M') }}</span>
+            {% else %}
+                无消息
+            {% endif %}
+        </a>
+    </li>
+    {% else %}
+    <li class="card">暂无聊天</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.js"></script>
+<script>
+    const socket = io('http://' + document.domain + ':' + location.port, {
+        transports: ['websocket']
+    });
+
+    socket.on('connect', () => {
+        console.log('Connected to SocketIO server');
+    });
+
+    socket.on('new_activity', (data) => {
+        console.log('New activity:', data);
+        const activityList = document.getElementById('activity-list');
+        if (activityList.querySelector('li').textContent === '暂无活动') {
+            activityList.innerHTML = '';
+        }
+        const li = document.createElement('li');
+        li.className = 'card';
+        li.setAttribute('data-id', data.id);
+        li.innerHTML = `<a href="/activity/${data.id}" class="card-link"><span class="card-title">${data.title}</span> - ${data.creator} - ${data.event_time}` +
+                       (data.end_time ? ` 至 ${data.end_time}` : '') + `</a>`;
+        activityList.insertBefore(li, activityList.firstChild);
+    });
+
+    socket.on('delete_activity', (data) => {
+        console.log('Delete activity:', data);
+        const activityList = document.getElementById('activity-list');
+        const li = activityList.querySelector(`li[data-id="${data.id}"]`);
+        if (li) {
+            li.remove();
+        }
+        if (!activityList.querySelector('li')) {
+            activityList.innerHTML = '<li class="card">暂无活动</li>';
+        }
+        const recentChats = document.getElementById('recent-chats');
+        const chatLi = recentChats.querySelector(`li[data-activity-id="${data.id}"]`);
+        if (chatLi) {
+            chatLi.remove();
+        }
+        if (!recentChats.querySelector('li')) {
+            recentChats.innerHTML = '<li class="card">暂无聊天</li>';
+        }
+    });
+
+    socket.on('new_chat_message', (data) => {
+        console.log('New chat message:', data);
+        const recentChats = document.getElementById('recent-chats');
+        let li = recentChats.querySelector(`li[data-conversation-id="${data.conversation_id}"]`);
+        if (li) {
+            li.querySelector('.timestamp').textContent = data.timestamp;
+            recentChats.insertBefore(li, recentChats.firstChild);
+        } else {
+            if (recentChats.querySelector('li').textContent === '暂无聊天') {
+                recentChats.innerHTML = '';
+            }
+            li = document.createElement('li');
+            li.className = 'card';
+            li.setAttribute('data-activity-id', data.activity_id);
+            li.setAttribute('data-conversation-id', data.conversation_id);
+            li.innerHTML = `<a href="/chat/${data.conversation_id}" class="card-link"><span class="card-title">${data.activity_title} - ${data.other_user}</span> - 最后消息: <span class="timestamp">${data.timestamp}</span></a>`;
+            recentChats.insertBefore(li, recentChats.firstChild);
+        }
+    });
+</script>
+{% endblock %}

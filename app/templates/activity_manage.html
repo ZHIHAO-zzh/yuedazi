@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>活动管理</h1>
+<h2>我创建的活动</h2>
+<ul>
+    {% for activity in created_activities %}
+    <li class="card">
+        <div class="activity-info">
+            {{ activity.title }} - {{ to_local_time(activity.event_time).strftime('%Y-%m-%d %H:%M') }}
+            {% if activity.end_time %}
+                至 {{ to_local_time(activity.end_time).strftime('%Y-%m-%d %H:%M') }}
+            {% endif %}
+        </div>
+        <div class="activity-actions">
+            <form method="GET" action="{{ url_for('activity_edit', activity_id=activity.id) }}" style="display:inline;">
+                <button type="submit"><i class="fas fa-edit"></i> 编辑</button>
+            </form>
+            <form method="POST" action="{{ url_for('activity_delete', activity_id=activity.id) }}" style="display:inline;" onsubmit="return confirm('确定要删除此活动吗？');">
+                <button type="submit" class="delete-btn"><i class="fas fa-trash-alt"></i> 删除</button>
+            </form>
+        </div>
+    </li>
+    {% else %}
+    <li class="card">您尚未创建任何活动。</li>
+    {% endfor %}
+</ul>
+<h2>我参与的活动</h2>
+<ul>
+    {% for activity in joined_activities %}
+    <li class="card">
+        <div class="activity-info">
+            {{ activity.title }} - {{ to_local_time(activity.event_time).strftime('%Y-%m-%d %H:%M') }}
+            {% if activity.end_time %}
+                至 {{ to_local_time(activity.end_time).strftime('%Y-%m-%d %H:%M') }}
+            {% endif %}
+        </div>
+        <div class="activity-actions">
+            <form method="POST" action="{{ url_for('activity_leave', activity_id=activity.id) }}" style="display:inline;" onsubmit="return confirm('确定要退出此活动吗？');">
+                <button type="submit"><i class="fas fa-sign-out-alt"></i> 退出</button>
+            </form>
+        </div>
+    </li>
+    {% else %}
+    <li class="card">您尚未参与任何活动。</li>
+    {% endfor %}
+</ul>
+{% endblock %}
